@@ -14,41 +14,44 @@ public class Aula004ImplementacaoFilaThread extends Thread {
 	
 	@Override
 	public void run() {
-		Iterator iteracao = pilhaFila.iterator();
+		System.out.println("Fila Rodando");
 		
-		synchronized (iteracao) { /*Bloqueia o acesso a essa lista por outros processos*/
-			
-			while(iteracao.hasNext()) { /*Enquanto conter dados na lista, irá processar*/
-				/*Pega os elementos do tipo ObjetoFilaThread de dentro do iterator da pilhaFila*/
-				Aula004ObjetoFilaThread processar = (Aula004ObjetoFilaThread) iteracao.next();
+		while(true) {
+			synchronized (pilhaFila) { /*Bloqueia o acesso a essa lista por outros processos*/
 				
-				/*Coisas que poderiam ser feitas:
-				 * Processar 10 mil notas fiscais
-				 * Gerar uma lista enorme de PDF's
-				 * Gerar um envio em massa de email*/
-				System.out.println("--------------------------------------------");
-				
-				System.out.println(processar.getEmail());
-				System.out.println(processar.getNome());
-				
-				iteracao.remove(); /*Remove depois de processar*/
-				
-				try {
-					Thread.sleep(100); /*Dar um tempo para descarga de memória*/
+				Iterator iteracao = pilhaFila.iterator();
+				while(iteracao.hasNext()) { /*Enquanto conter dados na lista, irá processar*/
+					/*Pega os elementos do tipo ObjetoFilaThread de dentro do iterator da pilhaFila*/
+					Aula004ObjetoFilaThread processar = (Aula004ObjetoFilaThread) iteracao.next();
 					
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					/*Coisas que poderiam ser feitas:
+					 * Processar 10 mil notas fiscais
+					 * Gerar uma lista enorme de PDF's
+					 * Gerar um envio em massa de email*/
+					System.out.println("--------------------------------------------");
+					
+					System.out.println(processar.getEmail());
+					System.out.println(processar.getNome());
+					
+					iteracao.remove(); /*Remove depois de processar*/
+					
+					try {
+						Thread.sleep(1000); /*Dar um tempo para descarga de memória*/
+						
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					
 				}
 			}
 			
-		}
-		
-		try {
-			Thread.sleep(1000); /*Dar um tempo após o processamento da uma lista*/
+			try {
+				Thread.sleep(2000); /*Dar um tempo após o processamento da uma lista*/
+				
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
-		
 	}
 }
